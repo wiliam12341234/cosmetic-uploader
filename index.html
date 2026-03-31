@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southeast Asia Cosmetic Uploader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2d3436;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #636e72;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: #0984e3;
+            font-weight: 500;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #2d3436;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card p {
+            color: #636e72;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .link-button {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #6c5ce7;
+            border-radius: 50px;
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .link-button:hover {
+            background: #6c5ce7;
+            color: white;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">C</div>
+            <h1>Southeast Asia Cosmetic Uploader</h1>
+            <p class="subtitle">Automated Beauty Product Listing Tool for TikTok Shop</p>
+            <p class="tagline">Streamline your cross-border e-commerce with intelligent automation</p>
+        </header>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>Automated Product Collection</h3>
+                <p>Intelligently collect beauty products from 1688 platform with smart filtering and scoring system.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌏</div>
+                <h3>Multi-language Support</h3>
+                <p>Automatic translation to Thai, Vietnamese, Indonesian, and other Southeast Asian languages.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Batch Upload</h3>
+                <p>Upload multiple products simultaneously to TikTok Shop with optimized pricing and categorization.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Smart Optimization</h3>
+                <p>AI-powered scoring system to select the best products based on sales, reviews, and market trends.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure Integration</h3>
+                <p>OAuth 2.0 secure authentication with TikTok Shop API. Your data is always protected.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Performance Analytics</h3>
+                <p>Detailed reports and analytics to track upload success rates and product performance.</p>
+            </div>
+        </section>
+        
+        <section class="cta-section">
+            <h2>Start Automating Your TikTok Shop Today</h2>
+            <p>Join hundreds of sellers who have streamlined their Southeast Asia e-commerce operations.</p>
+            <a href="#contact" class="cta-button">Get Started Now</a>
+            
+            <div class="links">
+                <a href="TERMS.md" class="link-button">Terms of Service</a>
+                <a href="PRIVACY.md" class="link-button">Privacy Policy</a>
+                <a href="#api-docs" class="link-button">API Documentation</a>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2026 Southeast Asia Cosmetic Uploader. All rights reserved.</p>
+            <p>This tool integrates with TikTok Shop API for automated product management.</p>
+            <p>Contact: support@cosmetic-uploader.com</p>
+        </footer>
+    </div>
+</body>
+</html>
