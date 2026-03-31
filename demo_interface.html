@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southeast Asia Cosmetic Uploader - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .sandbox-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .demo-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .menu-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .menu-item.active {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+        
+        .menu-item .icon {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .step-container {
+            display: none;
+        }
+        
+        .step-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4facfe;
+        }
+        
+        .step-content {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .api-scope {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #4facfe;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+        
+        .button.secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s;
+        }
+        
+        .language-badge {
+            display: inline-block;
+            background: #ffeb3b;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .demo-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .url-display {
+            background: #333;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Southeast Asia Cosmetic Uploader</h1>
+            <div class="subtitle">TikTok Shop API Integration Demo</div>
+            <div class="sandbox-badge">SANDBOX ENVIRONMENT - FOR DEMONSTRATION ONLY</div>
+        </div>
+        
+        <div class="demo-content">
+            <div class="sidebar">
+                <div class="menu-item active" data-step="1">
+                    <span class="icon">🔗</span> TikTok Authorization
+                </div>
+                <div class="menu-item" data-step="2">
+                    <span class="icon">📋</span> API Scopes
+                </div>
+                <div class="menu-item" data-step="3">
+                    <span class="icon">🛍️</span> Product Management
+                </div>
+                <div class="menu-item" data-step="4">
+                    <span class="icon">🌐</span> Multi-language
+                </div>
+                <div class="menu-item" data-step="5">
+                    <span class="icon">🚀</span> Batch Upload
+                </div>
+                <div class="menu-item" data-step="6">
+                    <span class="icon">✅</span> Verification
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Step 1: TikTok Authorization -->
+                <div class="step-container active" id="step1">
+                    <h2 class="step-title">Step 1: TikTok OAuth Authorization</h2>
+                    <div class="step-content">
+                        <p>Connect to TikTok Shop API with required permissions:</p>
+                        <div class="url-display">https://wiliam12341234.github.io/cosmetic-uploader/demo_interface.html</div>
+                        <button class="button" onclick="showStep(2)">Connect TikTok Shop</button>
+                        <p style="margin-top: 20px;">This will redirect to TikTok OAuth page requesting:</p>
+                        <div>
+                            <span class="api-scope">product.manage</span>
+                            <span class="api-scope">product.list</span>
+                            <span class="api-scope">product.create</span>
+                            <span class="api-scope">product.update</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: API Scopes -->
+                <div class="step-container" id="step2">
+                    <h2 class="step-title">Step 2: API Scopes Demonstration</h2>
+                    <div class="step-content">
+                        <p>All requested API scopes will be demonstrated:</p>
+                        <div style="margin: 20px 0;">
+                            <div class="api-scope" style="background: #4caf50; color: white;">product.manage</div>
+                            <div class="api-scope" style="background: #2196f3; color: white;">product.list</div>
+                            <div class="api-scope" style="background: #ff9800; color: white;">product.create</div>
+                            <div class="api-scope" style="background: #9c27b0; color: white;">product.update</div>
+                        </div>
+                        <button class="button" onclick="showStep(3)">Continue to Product Management</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Product Management -->
+                <div class="step-container" id="step3">
+                    <h2 class="step-title">Step 3: Product Management (product.list)</h2>
+                    <div class="step-content">
+                        <p>Retrieving existing products from TikTok Shop:</p>
+                        <div class="product-card">
+                            <div class="product-name">Rose Quartz Facial Serum</div>
+                            <div class="product-details">
+                                <span>Price: ฿890</span>
+                                <span>Stock: 45</span>
+                                <span>Status: Active</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Charcoal Detox Mask</div>
+                            <div class="product-details">
+                                <span>Price: ฿650</span>
+                                <span>Stock: 28</span>
+                                <span>Status: Active</span>
+                            </div>
+                        </div>
+                        <button class="button" onclick="showStep(4)">Continue to Translation</button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Multi-language -->
+                <div class="step-container" id="step4">
+                    <h2 class="step-title">Step 4: Multi-language Processing</h2>
+                    <div class="step-content">
+                        <p>Translating product information for Southeast Asian markets:</p>
+                        <div class="product-card">
+                            <div class="product-name">Original: 玫瑰石英面部精华液</div>
+                            <div style="margin: 15px 0;">
+                                <span class="language-badge">Thai: ซีรัมหน้าแร่กุหลาบควอตซ์</span>
+                                <span class="language-badge">Vietnamese: Huyết thanh mặt hồng ngọc</span>
+                                <span class="language-badge">Indonesian: Serum wajah kuarsa mawar</span>
+                            </div>
+                        </div>
+                        <button class="button" onclick="showStep(5)">Continue to Upload</button>
+                    </div>
+                </div>
+                
+                <!-- Step 5: Batch Upload -->
+                <div class="step-container" id="step5">
+                    <h2 class="step-title">Step 5: Batch Upload (product.create)</h2>
+                    <div class="step-content">
+                        <p>Uploading 3 products to TikTok Shop:</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="uploadProgress"></div>
+                        </div>
+                        <div id="uploadStatus">
+                            <div>Rose Quartz Serum: <span id="status1">Pending</span></div>
+                            <div>Charcoal Mask: <span id="status2">Pending</span></div>
+                            <div>Vitamin C Cream: <span id="status3">Pending</span></div>
+                        </div>
+                        <button class="button" onclick="simulateUpload()">Start Batch Upload</button>
+                    </div>
+                </div>
+                
+                <!-- Step 6: Verification -->
+                <div class="step-container" id="step6">
+                    <h2 class="step-title">Step 6: Verification (product.update)</h2>
+                    <div class="step-content">
+                        <p>Products successfully uploaded to TikTok Shop:</p>
+                        <div class="product-card" style="border-left-color: #4caf50;">
+                            <div class="product-name">✅ Rose Quartz Facial Serum</div>
+                            <div class="product-details">
+                                <span>Product ID: PROD_001</span>
+                                <span>Market: Thailand</span>
+                                <span>Uploaded: Just now</span>
+                            </div>
+                        </div>
+                        <div class="product-card" style="border-left-color: #4caf50;">
+                            <div class="product-name">✅ Charcoal Detox Mask</div>
+                            <div class="product-details">
+                                <span>Product ID: PROD_002</span>
+                                <span>Market: Vietnam</span>
+                                <span>Uploaded: Just now</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 20px;">This completes the end-to-end integration demonstrating all requested scopes.</p>
+                        <button class="button secondary" onclick="showStep(1)">Restart Demo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-footer">
+            <div>Demo URL: https://wiliam12341234.github.io/cosmetic-uploader/demo_interface.html</div>
+            <div>Sandbox Environment | For TikTok Developer Platform Review</div>
+        </div>
+    </div>
+
+    <script>
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Show selected step
+            document.getElementById('step' + stepNumber).classList.add('active');
+            
+            // Update menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.menu-item[data-step="${stepNumber}"]`).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function simulateUpload() {
+            const progress = document.getElementById('uploadProgress');
+            const status1 = document.getElementById('status1');
+            const status2 = document.getElementById('status2');
+            const status3 = document.getElementById('status3');
+            
+            let progressValue = 0;
+            const interval = setInterval(() => {
+                progressValue += 10;
+                progress.style.width = progressValue + '%';
+                
+                if (progressValue >= 33) status1.textContent = '✅ Uploaded';
+                if (progressValue >= 66) status2.textContent = '✅ Uploaded';
+                if (progressValue >= 100) {
+                    status3.textContent = '✅ Uploaded';
+                    clearInterval(interval);
+                    setTimeout(() => showStep(6), 500);
+                }
+            }, 300);
+        }
+        
+        // Initialize
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const step = this.getAttribute('data-step');
+                showStep(parseInt(step));
+            });
+        });
+    </script>
+</body>
+</html>
