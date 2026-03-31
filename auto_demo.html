@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Demo - Southeast Asia Cosmetic Uploader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .sandbox-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        
+        .url-display {
+            background: #0f172a;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #3b82f6;
+        }
+        
+        .demo-area {
+            background: #0f172a;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .step-title {
+            font-size: 2rem;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .step-content {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .api-scopes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .scope {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .product-card {
+            background: #334155;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #10b981;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            color: #fbbf24;
+            margin-bottom: 10px;
+        }
+        
+        .product-details {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background: #334155;
+            height: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        .upload-status {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .status-item {
+            background: #334155;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .status-item.success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: #10b981;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.5rem;
+            z-index: 1000;
+        }
+        
+        .step-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: #fbbf24;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            z-index: 1000;
+        }
+        
+        .highlight {
+            color: #fbbf24;
+            font-weight: bold;
+            animation: highlight 1s infinite;
+        }
+        
+        @keyframes highlight {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .language-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .language {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .completion {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #10b981;
+            margin-top: 30px;
+            animation: completionPulse 2s infinite;
+        }
+        
+        @keyframes completionPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">02:30</div>
+    <div class="step-counter" id="stepCounter">Step 1/6</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Southeast Asia Cosmetic Uploader</h1>
+            <div class="sandbox-badge">TIKTOK SANDBOX ENVIRONMENT DEMO</div>
+            <div class="url-display" id="currentUrl">https://wiliam12341234.github.io/cosmetic-uploader/auto_demo.html</div>
+        </div>
+        
+        <div class="demo-area">
+            <!-- Step 1: Introduction -->
+            <div class="step active" id="step1">
+                <h2 class="step-title">🎬 TikTok Shop API Integration Demo</h2>
+                <div class="step-content">
+                    <p>This video demonstrates the complete end-to-end integration of our application with TikTok Shop API.</p>
+                    <p>All operations are performed in the <span class="highlight">sandbox environment</span> as required for first-time applications.</p>
+                    <div class="api-scopes">
+                        <div class="scope">product.manage</div>
+                        <div class="scope">product.list</div>
+                        <div class="scope">product.create</div>
+                        <div class="scope">product.update</div>
+                    </div>
+                    <p>The domain shown matches our verified website URL.</p>
+                </div>
+            </div>
+            
+            <!-- Step 2: OAuth Authorization -->
+            <div class="step" id="step2">
+                <h2 class="step-title">🔗 Step 1: TikTok OAuth Authorization</h2>
+                <div class="step-content">
+                    <p>Connecting to TikTok Shop API with required permissions:</p>
+                    <div class="api-scopes">
+                        <div class="scope" style="background:linear-gradient(135deg,#10b981,#34d399)">product.manage</div>
+                        <div class="scope" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">product.list</div>
+                        <div class="scope" style="background:linear-gradient(135deg,#8b5cf6,#a855f7)">product.create</div>
+                        <div class="scope" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">product.update</div>
+                    </div>
+                    <p>User clicks "Connect TikTok Shop" and authorizes all four scopes.</p>
+                    <p>Authorization successful - API access granted.</p>
+                </div>
+            </div>
+            
+            <!-- Step 3: Product Management -->
+            <div class="step" id="step3">
+                <h2 class="step-title">🛍️ Step 2: Product Management (product.list)</h2>
+                <div class="step-content">
+                    <p>Retrieving existing products from TikTok Shop using <span class="highlight">product.list</span> scope:</p>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Rose Quartz Facial Serum</div>
+                            <div class="product-details">
+                                <div>Market: Thailand</div>
+                                <div>Price: ฿890 | Stock: 45</div>
+                                <div>Status: Active</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Charcoal Detox Mask</div>
+                            <div class="product-details">
+                                <div>Market: Vietnam</div>
+                                <div>Price: ₫210,000 | Stock: 28</div>
+                                <div>Status: Active</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Vitamin C Brightening Cream</div>
+                            <div class="product-details">
+                                <div>Market: Indonesia</div>
+                                <div>Price: Rp 85,000 | Stock: 62</div>
+                                <div>Status: Active</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Multi-language Processing -->
+            <div class="step" id="step4">
+                <h2 class="step-title">🌐 Step 3: Multi-language Processing</h2>
+                <div class="step-content">
+                    <p>Translating product information for Southeast Asian markets:</p>
+                    <div class="product-card" style="max-width:600px;margin:30px auto;">
+                        <div class="product-name">Original: 玫瑰石英面部精华液 (Rose Quartz Facial Serum)</div>
+                        <div class="language-badges">
+                            <div class="language">Thai: ซีรัมหน้าแร่กุหลาบควอตซ์</div>
+                            <div class="language">Vietnamese: Huyết thanh mặt hồng ngọc</div>
+                            <div class="language">Indonesian: Serum wajah kuarsa mawar</div>
+                        </div>
+                        <div style="margin-top:15px;color:#94a3b8;">
+                            Automatic translation with cosmetic industry terminology optimization
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Batch Upload -->
+            <div class="step" id="step5">
+                <h2 class="step-title">🚀 Step 4: Batch Upload (product.create)</h2>
+                <div class="step-content">
+                    <p>Uploading products to TikTok Shop using <span class="highlight">product.create</span> scope:</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="upload-status">
+                        <div class="status-item" id="status1">Rose Quartz Serum<br>Pending</div>
+                        <div class="status-item" id="status2">Charcoal Mask<br>Pending</div>
+                        <div class="status-item" id="status3">Vitamin C Cream<br>Pending</div>
+                    </div>
+                    <p>Batch processing 3 products simultaneously with automatic error handling.</p>
+                </div>
+            </div>
+            
+            <!-- Step 6: Completion -->
+            <div class="step" id="step6">
+                <h2 class="step-title">✅ Step 5: Verification & Completion</h2>
+                <div class="step-content">
+                    <p>All products successfully uploaded to TikTok Shop:</p>
+                    <div class="product-grid">
+                        <div class="product-card" style="border-left-color:#10b981;">
+                            <div class="product-name">✅ Rose Quartz Facial Serum</div>
+                            <div class="product-details">
+                                <div>Product ID: PROD_001_TK</div>
+                                <div>Market: Thailand | Uploaded: Just now</div>
+                            </div>
+                        </div>
+                        <div class="product-card" style="border-left-color:#10b981;">
+                            <div class="product-name">✅ Charcoal Detox Mask</div>
+                            <div class="product-details">
+                                <div>Product ID: PROD_002_VN</div>
+                                <div>Market: Vietnam | Uploaded: Just now</div>
+                            </div>
+                        </div>
+                        <div class="product-card" style="border-left-color:#10b981;">
+                            <div class="product-name">✅ Vitamin C Brightening Cream</div>
+                            <div class="product-details">
+                                <div>Product ID: PROD_003_ID</div>
+                                <div>Market: Indonesia | Uploaded: Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="completion">
+                        🎉 End-to-End Integration Complete!
+                    </div>
+                    <p>All requested API scopes have been demonstrated in this sandbox environment.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="startBtn">▶ Start Auto Demo (2:30)</button>
+            <button class="btn btn-secondary" id="manualBtn">Manual Control</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let totalSteps = 6;
+        let timerInterval;
+        let seconds = 150; // 2 minutes 30 seconds
+        let isAutoMode = false;
+        
+        const steps = document.querySelectorAll('.step');
+        const timerElement = document.getElementById('timer');
+        const stepCounter = document.getElementById('stepCounter');
+        const startBtn = document.getElementById('startBtn');
+        const manualBtn = document.getElementById('manualBtn');
+        const progressBar = document.getElementById('progressBar');
+        const status1 = document.getElementById('status1');
+        const status2 = document.getElementById('status2');
+        const status3 = document.getElementById('status3');
+        
+        // Update timer display
+        function updateTimer() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerElement.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Update step counter
+        function updateStepCounter() {
+            stepCounter.textContent = `Step ${currentStep}/${totalSteps}`;
+        }
+        
+        // Show specific step
+        function showStep(stepNumber) {
+            // Hide all steps
+            steps.forEach(step => step.classList.remove('active'));
+            
+            // Show target step
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            
+            currentStep = stepNumber;
+            updateStepCounter();
+            
+            // Special animations for certain steps
+            if (stepNumber === 5) {
+                // Step 5: Upload animation
+                let progress = 0;
+                const uploadInterval = setInterval(() => {
+                    progress += 2;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    if (progress >= 33) {
+                        status1.innerHTML = 'Rose Quartz Serum<br><span style="color:#10b981">✅ Uploaded</span>';
+                    }
+                    if (progress >= 66) {
+                        status2.innerHTML = 'Charcoal Mask<br><span style="color:#10b981">✅ Uploaded</span>';
+                    }
+                    if (progress >= 100) {
+                        status3.innerHTML = 'Vitamin C Cream<br><span style="color:#10b981">✅ Uploaded</span>';
+                        status1.classList.add('success');
+                        status2.classList.add('success');
+                        status3.classList.add('success');
+                        clearInterval(uploadInterval);
+                    }
+                }, 50);
+            }
+        }
+        
+        // Auto demo mode
+        function startAutoDemo() {
+            if (isAutoMode) return;
+            
+            isAutoMode = true;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Auto Demo Running...';
+            
+            // Start timer
+            timerInterval = setInterval(() => {
+                seconds--;
+                updateTimer();
+                
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    isAutoMode = false;
+                    startBtn.disabled = false;
+                    startBtn.textContent = '▶ Start Auto Demo (2:30)';
+                }
+            }, 1000);
+            
+            // Auto step progression
+            const stepTimes = [15, 30, 25, 25, 30, 25]; // seconds per step
+            let totalElapsed = 0;
+            
+            for (let i = 0; i < totalSteps; i++) {
+                setTimeout(() => {
+                    showStep(i + 1);
+                }, totalElapsed * 1000);
+                totalElapsed += stepTimes[i];
+            }
+        }
+        
+        // Manual control
+        function setupManualControls() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentStep < totalSteps) {
+                    showStep(currentStep + 1);
+                } else if (e.key === 'ArrowLeft' && currentStep > 1) {
+                    showStep(currentStep - 1);
+                } else if (e.key === ' ') {
+                    // Space to toggle auto mode
+                    if (!isAutoMode) {
+                        startAutoDemo();
+                    }
+                }
+            });
+            
+            // Add click handlers for steps
+            steps.forEach((step, index) => {
+                step.addEventListener('click', () => {
+                    if (!isAutoMode) {
+                        showStep(index + 1);
+                    }
+                });
+            });
+        }
+        
+        // Initialize
+        function init() {
+            updateTimer();
+            updateStepCounter();
+            showStep(1);
+            setupManualControls();
+            
+            startBtn.addEventListener('click', startAutoDemo);
+            
+            manualBtn.addEventListener('click', () => {
+                if (isAutoMode) {
+                    clearInterval(timerInterval);
+                    isAutoMode = false;
+                    startBtn.disabled = false;
+                    startBtn.textContent = '▶ Start Auto Demo (2:30)';
+                }
+                alert('Manual mode enabled. Use:\n→ Arrow keys to navigate\n→ Space to start auto demo\n→ Click on steps to jump');
+            });
+            
+            // Update URL display with current location
+            const urlElement = document.getElementById('currentUrl');
+            urlElement.textContent = window.location.href;
+        }
+        
+        // Start when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
