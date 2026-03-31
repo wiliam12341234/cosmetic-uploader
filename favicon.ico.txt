@@ -1,0 +1,8 @@
+# 这是一个占位符favicon文件
+# 实际使用时需要真正的.ico文件
+# 但GitHub Pages可以处理文本文件作为占位符
+
+Favicon placeholder for Southeast Asia Cosmetic Uploader
+This file should be replaced with a real .ico file
+Minimum size: 16x16 pixels, 32x32 pixels recommended
+Format: .ico (Windows icon format)

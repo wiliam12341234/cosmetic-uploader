@@ -1,0 +1,29 @@
+# robots.txt for Southeast Asia Cosmetic Uploader
+# Allow all search engines and crawlers to access the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://wiliam12341234.github.io/cosmetic-uploader/sitemap.xml
+
+# TikTok verification bot (if known)
+User-agent: TikTokBot
+Allow: /
+
+# Common search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Rate limiting suggestion (optional)
+# Crawl-delay: 10
+
+# Last updated
+# Generated: 2026-03-31
+# Contact: support@cosmetic-uploader.com
